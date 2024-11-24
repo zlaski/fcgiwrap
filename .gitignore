@@ -10,3 +10,4 @@ Makefile
 config.guess
 config.sub
 fcgiwrap.exe
+.gdb-bkpts
