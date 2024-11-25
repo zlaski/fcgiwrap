@@ -51,6 +51,8 @@
 #include <systemd/sd-daemon.h>
 #endif
 
+#include <windows.h>
+
 /* glibc doesn't seem to export it */
 #ifndef UNIX_PATH_MAX
 #define UNIX_PATH_MAX 108
@@ -136,7 +138,7 @@ enum char_class_t {
 	CC_NORMAL,
 	CC_CR,
 	CC_LF,
-	CC_MAX
+	CC_CLASS_MAX
 };
 
 #define ACTION_MASK	(15 << 4)
@@ -147,7 +149,7 @@ enum char_class_t {
 #define ACTION_EXTRA_CR	(4 << 4)
 #define ACTION_EXTRA_LF	(5 << 4)
 
-static const unsigned char header_state_machine[REPLY_STATE_MAX][CC_MAX] = {
+static const unsigned char header_state_machine[REPLY_STATE_MAX][CC_CLASS_MAX] = {
 	[REPLY_STATE_INIT] = {
 		[CC_NORMAL] = REPLY_STATE_HEADER,
 		[CC_CR] = ACTION_ERROR,
@@ -805,6 +807,8 @@ int main(int argc, char **argv)
 	char *socket_url = NULL;
 	int fd = 0;
 	int c;
+
+    MessageBoxA(HWND_DESKTOP, "breakpoint", "fcgiwrap", MB_OK | MB_SYSTEMMODAL);
 
 	while ((c = getopt(argc, argv, "c:hfs:p:")) != -1) {
 		switch (c) {
